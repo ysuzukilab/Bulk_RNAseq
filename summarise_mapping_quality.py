@@ -10,7 +10,7 @@ Directory should be like
 	L____ star_scripts
 Make sure to call this script from working directory as shown above
 
-OUTPUT: ./STAR_OUTPUT/df_mapped_summary.csv
+OUTPUT: ./STAR_OUTPUT/df_mappeing_featureCounts_quality_summary.csv
 '''
 
 import subprocess
@@ -70,7 +70,7 @@ def main():
 		df = df[~np.all(df == '0%', axis=1)]
 		df = df[~np.all(df == '0.00%', axis=1)]
 		df = df.drop(['Started job on','Started mapping on','Finished on','Average input read length','Status'])
-	df.to_csv(input_dir+'/df_mapped_summary.csv')
+	df.to_csv(input_dir+'/df_mapping_featureCounts_quality_summary.csv')
 	subprocess.call('rm '+input_dir+'/rm_run_folder_lst.txt',shell=True)
 
 
