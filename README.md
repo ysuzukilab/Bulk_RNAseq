@@ -8,7 +8,7 @@ Repository for Bulk RNA-seq analysis
 ## Step 2. Download data
 Prepare input file wich has all the ftp addresses of the data you want.  
 Then run either of the following:  
-`qsub -l os7 -cwd ftp_wget.sh your_input_file.txt'  
+`qsub -l os7 -cwd ftp_wget.sh your_input_file.txt`   
 		OR  
 `bash ftp_wget.sh your_input_file.txt &`  
 
