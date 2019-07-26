@@ -14,7 +14,7 @@ Then run either of the following:
 
 ## Step 3. Map against reference (Star mapper)
 The following command maps data against reference and runs feature-counting tools.  
-qsub -cwd -l os7 star.sh  
+`qsub -cwd -l os7 star.sh`  
 First time:  
    1. Download reference sequence (from NCBI, DDBJ, EMBL etc.)  
    2. Prepare reference indices.  
