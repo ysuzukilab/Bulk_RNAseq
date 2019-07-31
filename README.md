@@ -4,7 +4,23 @@ Repository for Bulk RNA-seq analysis
 ## Step 1. Import necessary tools  
 `bash preparation.sh`
 
-
+```
+Bulk_RNA_dir
+	L---tools
+	L---data
+		L---reference														   
+			L---Homo_sapiens
+				L---star																		
+				L---UCSC/hg38											
+					L---Sequence/WholeGenomeFasta/genome.fa											
+					L---Annotation/Genes/genes.gtf
+		L---*.bz2 files
+			L---STAR_OUTPUT (this directory will be made by running this script)
+				L---Sample_output_1
+				L---Sample_output_2
+				L--- ...
+				L---counts
+```
 ## Step 2. Download data
 Prepare input file wich has all the ftp addresses of the data you want.  
 Then run either of the following:  
