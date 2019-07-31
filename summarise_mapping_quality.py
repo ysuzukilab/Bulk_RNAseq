@@ -58,11 +58,13 @@ def main():
 	parser.add_argument('--all',help='optional',action='store_true')
 	args = parser.parse_args()
 	input_dir = validate_dir(args.input_dir)
-	subprocess.call('ls '+input_dir+' | grep DR > '+input_dir+'/rm_run_folder_lst.txt',shell=True)
+	subprocess.call('ls '+input_dir+' | ls -d */ > '+input_dir+'/rm_run_folder_lst.txt',shell=True)
 	df = pd.DataFrame()
 	with open (input_dir+'/rm_run_folder_lst.txt','r') as f:
 		for line in f:
-			ID = line.strip()
+			ID = line.strip().rstrip('/')
+			if ID == 'counts':
+				continue
 			df = extract_info(input_dir,df,ID)
 	if not args.all:
 		df = df[~np.all(df == 0, axis=1)]

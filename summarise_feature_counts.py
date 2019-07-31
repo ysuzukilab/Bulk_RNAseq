@@ -30,11 +30,14 @@ def extract_info(directory,ID):
 
 def main():
 	directory = sys.argv[1]
-	subprocess.call('ls '+directory+' | grep DR > '+directory+'rm_run_folder_list.txt',shell=True)
+	subprocess.call('ls '+directory+' | ls -d */ > '+directory+'rm_run_folder_list.txt',shell=True)
 	df = pd.DataFrame()
 	with open (directory+'rm_run_folder_list.txt','r') as f:
 		for line in f:
-			ID = line.strip() 
+			ID = line.strip()
+			ID = ID.rstrip('/')
+			if ID == 'counts':
+				continue
 			if df.empty:
 				df = extract_info(directory,ID)
 			else:

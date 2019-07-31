@@ -7,13 +7,13 @@ Repository for Bulk RNA-seq analysis
 ```
 Bulk_RNA_dir
 	L---tools
-	L---data
-		L---reference														   
+	L---reference														   
 			L---Homo_sapiens
 				L---star																		
 				L---UCSC/hg38											
 					L---Sequence/WholeGenomeFasta/genome.fa											
 					L---Annotation/Genes/genes.gtf
+	L---data
 		L---*.bz2 files
 			L---STAR_OUTPUT (this directory will be made by running this script)
 				L---Sample_output_1
