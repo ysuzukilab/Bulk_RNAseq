@@ -14,6 +14,24 @@ DESCRIPTION:
 	3. Feature counting
 		Count the number of reads per gene [subread featureCounts]
 	Output: Feature counts matrix (gene_num*1 matrix)
+WORKING DIRECTORY:
+	Bulk_RNA_dir
+		L---tools
+		L---data
+				L---reference
+						L---Homo_sapiens
+								L---star
+								L---UCSC/hg38
+										L---Sequence/WholeGenomeFasta/genome.fa
+										L---Annotation/Genes/genes.gtf
+				L---*.bz2 files
+						L---STAR_OUTPUT (this directory will be made by running this script)
+								L---Sample_output_1
+								L---Sample_output_2
+								L---...
+								L---counts
+								L---df_feature_counts.csv
+								L---df_mapped_summary.csv
 COMMENT
 
 module use /usr/local/package/modulefiles
@@ -21,8 +39,8 @@ module load fastqc
 module load samtools
 module load fastx-toolkit
 
-export PATH=/home/nina/tools/STAR-2.7.1a/bin/Linux_x86_64/:$PATH
-export PATH=/home/nina/tools/subread-1.6.4-Linux-x86_64/bin/:$PATH
+export PATH=~/Bulk_RNA_dir/tools/STAR-2.7.1a/bin/Linux_x86_64/:$PATH
+export PATH=~/Bulk_RNA_dir/tools/subread-1.6.4-Linux-x86_64/bin/:$PATH
 
 
 preparation(){
@@ -39,7 +57,6 @@ quality_check(){
 	fastqc ${ID}.fastq
 	fastq_quality_trimmer -Q33 -t 20 -l 18 -i ${ID}.fastq| fastq_quality_filter -Q33 -q 20 -p 80 -o ${ID}.fastq_filtered.fastq
 	fastqc ${ID}.fastq_filtered.fastq 
-	mv ${ID}.fastq /archive/data/hgc0708/nyoshitake/human_bulk
 }
 
 
@@ -47,9 +64,9 @@ STAR_index(){
 	#make STAR's indices; run this if necessary (like for a new set of reference)
 	STAR	--runThreadN 12 \
 		--runMode genomeGenerate \
-		--genomeDir /home/nina/data/reference/Homo_sapiens/star/ \
-		--genomeFastaFiles /home/nina/data/reference/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa \
-		--sjdbGTFfile /home/nina/data/reference/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf \
+		--genomeDir ~/Bulk_RNA_dir/data/reference/Homo_sapiens/star/ \
+		--genomeFastaFiles ~/Bulk_RNA_dir/data/reference/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa \
+		--sjdbGTFfile ~/Bulk_RNA_dir/data/reference/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf \
 		--limitGenomeGenerateRAM 34000000000 \
 		--genomeSAindexNbases 8 
 }
@@ -59,13 +76,13 @@ STAR_mapping(){
 	#map via STAR
 	ID=$1
 	STAR --runThreadN 4 \
-		--genomeDir /home/nina/data/reference/Homo_sapiens/star/ \
+		--genomeDir ~/Bulk_RNA_dir/data/reference/Homo_sapiens/star/ \
 		--readFilesIn ${ID}.fastq_filtered.fastq \
 		--genomeLoad NoSharedMemory \
 		--outFilterMultimapNmax 1 \
 		--outSAMtype BAM SortedByCoordinate \
 		--outWigType wiggle read1_5p \
-		--sjdbGTFfile /home/nina/data/reference/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf
+		--sjdbGTFfile ~/Bulk_RNA_dir/data/reference/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf
 }
 
 #featureCount (subread package)
@@ -77,7 +94,7 @@ feature_counts(){
 			-g gene_id \
 			-s 1 \
 			-R BAM Aligned.sortedByCoord.out.bam \
-			-a /home/nina/data/reference/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf \
+			-a ~/Bulk_RNA_dir/data/reference/Homo_sapiens/UCSC/hg38/Annotation/Genes/genes.gtf \
 			-o counts.txt 
 
 	sed -e "1,2d" counts.txt | cut -f1,7 > ${ID}_counts_for_R.txt
