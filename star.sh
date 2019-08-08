@@ -103,7 +103,7 @@ func(){
 	ID=$1
 	mkdir $ID
 	cd $ID
-	cp ../../ftp_data/${ID}.fastq.bz2 ./
+	cp ../../data/${ID}.fastq.bz2 ./
 	echo $ID
 	quality_check $ID
 	#STAR_index #for the first time using STAR for a reference, run this
@@ -119,8 +119,8 @@ main () {
 	while read line
 	do	
 		ID=$line
-		func $ID ftp_data/bz2_lst.txt
-	done < ftp_data/bz2_lst.txt
+		func $ID data/bz2_lst.txt
+	done < data/bz2_lst.txt
 	
 }
 
